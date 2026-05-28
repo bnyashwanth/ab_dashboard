@@ -1,38 +1,73 @@
 # A/B Testing Analytics Dashboard & Statistical Engine
 
-A full-stack, data-driven web application designed to analyze A/B test results dynamically. This dashboard processes large-scale datasets, simulates live web traffic updates, and calculates statistical significance using mathematical Z-Tests for conversion optimization experiments.
+An interactive full-stack analytics dashboard for analyzing A/B test experiments using live statistical significance calculations, conversion tracking, and real-time visualization.
+
+---
+
+## Live Demo
+
+### Deployed Application
+
+https://ab-dashboard-coral.vercel.app/
+
+### GitHub Repository
+
+https://github.com/bnyashwanth/ab_dashboard
 
 ---
 
 ## Dashboard Preview
 
 ### Full Dashboard Overview
-![Dashboard Overview](images/dashboard-overview.png)
+
+<p align="center">
+  <img src="images/dashboard-overview.png" width="100%" alt="Dashboard Overview"/>
+</p>
+
+---
 
 ### Conversion Analytics Chart
-![Conversion Analytics](images/conversion-chart.png)
+
+<p align="center">
+  <img src="images/conversion-chart.png" width="100%" alt="Conversion Analytics"/>
+</p>
+
+---
 
 ### Experiment Results Panel
-![Experiment Results](images/experiment-results.png)
+
+<p align="center">
+  <img src="images/experiment-results.png" width="100%" alt="Experiment Results"/>
+</p>
+
+---
 
 ### Real-Time Metrics Cards
-![Metrics Cards](images/metrics-cards.png)
+
+<p align="center">
+  <img src="images/metrics-cards.png" width="100%" alt="Metrics Cards"/>
+</p>
+
+---
 
 ### Sidebar & Navigation UI
-![Sidebar Navigation](images/sidebar-navigation.png)
+
+<p align="center">
+  <img src="images/sidebar-navigation.png" width="100%" alt="Sidebar Navigation"/>
+</p>
 
 ---
 
 ## Features
 
 * Real-Time Data Ingestion using Pandas
-* Live Statistical Significance Calculation with Z-Test
-* Dynamic Polling System updating every 2 seconds
-* Interactive Conversion Rate Visualization using Chart.js
-* Responsive Dashboard UI built with Bootstrap 5
-* Modular Flask Backend Architecture
+* Live Statistical Significance Calculation
+* Dynamic Polling Engine
+* Interactive Chart.js Visualizations
+* Bootstrap 5 Responsive UI
+* Flask REST API Backend
 * A/B Experiment Comparison Engine
-* Conversion Tracking & Confidence Analysis
+* Conversion Tracking Dashboard
 
 ---
 
@@ -57,12 +92,12 @@ A full-stack, data-driven web application designed to analyze A/B test results d
 
 ## Project Structure
 
-```text
+```text id="t6g4xo"
 ab_dashboard/
 │
 ├── app.py
 ├── ab_data.csv
-├── requirements.tx t
+├── requirements.txt
 ├── vercel.json
 ├── README.md
 │
@@ -79,98 +114,78 @@ ab_dashboard/
 
 ---
 
-## Installation & Setup
+## Installation
 
-### Clone the Repository
+### Clone Repository
 
-```bash
-git clone https://github.com/your-username/ab-optimize-dashboard.git
+```bash id="mg0vri"
+git clone https://github.com/bnyashwanth/ab_dashboard
 ```
 
-### Navigate to the Project Directory
+### Move into Project Folder
 
-```bash
-cd ab-optimize-dashboard
+```bash id="gl7p4q"
+cd ab_dashboard
 ```
 
 ### Install Dependencies
 
-```bash
+```bash id="e3k8lu"
 pip install -r requirements.txt
 ```
 
-### Run the Flask Application
+### Run Application
 
-```bash
+```bash id="r5n2yw"
 python app.py
 ```
 
-### Open in Browser
+### Open Browser
 
-```text
+```text id="x0v7ns"
 http://127.0.0.1:5000/
 ```
 
 ---
 
-## Core Analytical Logic
+## Statistical Analysis
 
-### Conversion Rate Formula
+The dashboard uses Z-Test statistical calculations to determine whether Version B significantly outperforms Version A.
 
-```text
-Conversion Rate = (Total Conversions / Total Visitors) × 100
+### Conversion Formula
+
+```text id="z2d6fb"
+Conversion Rate = (Conversions / Visitors) × 100
 ```
 
-The dashboard continuously updates visitor and conversion metrics in real time.
+### Statistical Engine
 
----
-
-### Statistical Significance (Z-Test)
-
-The backend uses `statsmodels.proportions_ztest` to determine whether Version B truly outperformed Version A or if the observed results occurred by random chance.
-
-The engine:
-
-* Calculates p-values
-* Computes confidence levels
-* Compares conversion performance
-* Generates live statistical insights
+* P-value calculation
+* Confidence level analysis
+* Live experiment comparison
+* Conversion performance tracking
 
 ---
 
 ## Dataset Insights
 
-| Variant               | Visitors | Conversions | Conversion Rate |
-| --------------------- | -------- | ----------- | --------------- |
-| Version A (Control)   | 147,724  | 17,896      | 12.11%          |
-| Version B (Variation) | 147,766  | 17,684      | 11.97%          |
+| Variant   | Visitors | Conversions | Conversion Rate |
+| --------- | -------- | ----------- | --------------- |
+| Version A | 147,724  | 17,896      | 12.11%          |
+| Version B | 147,766  | 17,684      | 11.97%          |
 
-### Analysis
-
-The control group slightly outperformed the variation. The statistical confidence for Version B winning is approximately **11%**, indicating that the new variation does not significantly outperform the original design.
+The statistical confidence level indicates that Version A performs better than Version B based on the analyzed dataset.
 
 ---
 
 ## Future Improvements
 
-* MongoDB Atlas integration for live event tracking
-* User authentication system
-* Experiment history and filtering
+* MongoDB Atlas Integration
+* User Authentication
+* Experiment History Tracking
 * Sample Size Calculator
-* Advanced analytics reports
-* Exportable PDF experiment summaries
-
----
-
-## Deployment
-
-This project is configured for deployment using Vercel.
-
-### Deploy Command
-
-```bash
-vercel deploy
-```
+* Advanced Reporting System
+* Exportable Analytics Reports
 
 ---
 
