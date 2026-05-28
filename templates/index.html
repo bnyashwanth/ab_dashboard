@@ -1,0 +1,664 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>A/B Testing Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        /* =========================
+           PROFESSIONAL BOXY UI
+           ========================= */
+
+        :root {
+            --bg-body: #f3f4f6;
+            --bg-sidebar: #111827;
+            --bg-card: #ffffff;
+            --border-color: #d1d5db;
+
+            --text-main: #111827;
+            --text-muted: #6b7280;
+
+            --primary: #111827;
+
+            --success: #16a34a;
+            --danger: #dc2626;
+
+            --radius: 6px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        /* =========================
+           SIDEBAR
+           ========================= */
+
+        .sidebar {
+            background: var(--bg-sidebar);
+            width: 250px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 28px 20px;
+            border-right: 1px solid #1f2937;
+        }
+
+        .sidebar h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-section {
+            margin-top: 28px;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 12px 14px;
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background: #1f2937;
+            border-color: #374151;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: white;
+            color: #111827;
+            border-color: white;
+            font-weight: 600;
+        }
+
+        /* =========================
+           MAIN CONTENT
+           ========================= */
+
+        .main-content {
+            margin-left: 250px;
+            padding: 32px;
+        }
+
+        /* =========================
+           HEADER
+           ========================= */
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dashboard-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .dashboard-header span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .profile-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 12px 18px;
+            border-radius: var(--radius);
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 4px;
+            background: #111827;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        /* =========================
+           CARDS
+           ========================= */
+
+        .card-custom {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 22px;
+            height: 100%;
+        }
+
+        .kpi-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 12px 0 6px;
+            color: var(--text-main);
+        }
+
+        .trend-badge {
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        /* =========================
+           STAT BOXES
+           ========================= */
+
+        .stat-box {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-bottom: 14px;
+            background: #fafafa;
+        }
+
+        .stat-box.primary {
+            border-left: 4px solid #111827;
+        }
+
+        .stat-box.success {
+            border-left: 4px solid #16a34a;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+
+        @media (max-width: 992px) {
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         SIDEBAR
+         ========================= -->
+
+    <div class="sidebar">
+
+        <h4 class="text-white mb-4">
+            A/B Optimize
+        </h4>
+
+        <div class="sidebar-section">
+            Main
+        </div>
+
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Experiments</a>
+        <a href="#">Results</a>
+        <a href="#">Goals</a>
+
+        <div class="sidebar-section">
+            Tools
+        </div>
+
+        <a href="#">A/B Test Calculator</a>
+        <a href="#">Sample Size</a>
+        <a href="#">Browser Stats</a>
+
+    </div>
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
+    <div class="main-content">
+
+        <!-- Header -->
+
+        <div class="dashboard-header">
+
+            <div>
+                <h2>A/B Testing Dashboard</h2>
+                <span>
+                    Optimize your website conversion rates with data-driven insights
+                </span>
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    BY
+                </div>
+
+                <div>
+                    <div class="fw-bold">
+                        B N YASHWANTH
+                    </div>
+
+                    <div class="text-muted small">
+                        1DS24RI010
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- KPI CARDS -->
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-4">
+
+                <div class="card-custom">
+
+                    <div class="kpi-title">
+                        Total Visitors
+                    </div>
+
+                    <div class="kpi-value" id="total_visitors">
+                        0
+                    </div>
+
+                    <div class="trend-badge trend-up">
+                        ↑ Live traffic streaming
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card-custom">
+
+                    <div class="kpi-title">
+                        Conversions
+                    </div>
+
+                    <div class="kpi-value" id="total_conversions">
+                        0
+                    </div>
+
+                    <div class="trend-badge trend-up">
+                        ↑ Updating every 2 seconds
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card-custom">
+
+                    <div class="kpi-title">
+                        Overall Conversion Rate
+                    </div>
+
+                    <div class="kpi-value" id="overall_rate">
+                        0.00%
+                    </div>
+
+                    <div class="trend-badge trend-up">
+                        ↑ Live calculations
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CHART + STATS -->
+
+        <div class="row g-4">
+
+            <!-- Chart -->
+
+            <div class="col-lg-8">
+
+                <div class="card-custom">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Conversion Rate Over Time
+                        </h5>
+
+                    </div>
+
+                    <div class="chart-container">
+
+                        <canvas id="conversionChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Experiment Stats -->
+
+            <div class="col-lg-4">
+
+                <div class="card-custom">
+
+                    <h5 class="fw-bold mb-4">
+                        Current Experiment
+                    </h5>
+
+                    <!-- Version A -->
+
+                    <div class="stat-box primary">
+
+                        <div class="fw-bold mb-2">
+                            Version A (Control)
+                        </div>
+
+                        <div class="text-muted small mb-2">
+                            Visitors:
+                            <span id="var_a_visitors">0</span>
+
+                            |
+
+                            Conversions:
+                            <span id="var_a_conversions">0</span>
+                        </div>
+
+                        <h3 id="var_a_rate">
+                            0.00%
+                        </h3>
+
+                    </div>
+
+                    <!-- Version B -->
+
+                    <div class="stat-box success">
+
+                        <div class="fw-bold mb-2">
+                            Version B (Variation)
+                        </div>
+
+                        <div class="text-muted small mb-2">
+                            Visitors:
+                            <span id="var_b_visitors">0</span>
+
+                            |
+
+                            Conversions:
+                            <span id="var_b_conversions">0</span>
+                        </div>
+
+                        <h3 id="var_b_rate">
+                            0.00%
+                        </h3>
+
+                    </div>
+
+                    <!-- Confidence -->
+
+                    <div class="mt-4 pt-3 border-top">
+
+                        <h6 class="fw-bold mb-2">
+                            Statistical Significance
+                        </h6>
+
+                        <h2 class="fw-bold text-success" id="confidence_level">
+                            0.0%
+                        </h2>
+
+                        <div class="text-muted small">
+                            Confidence level calculated using live Z-Test
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         CHART JS
+         ========================= -->
+
+    <script>
+
+        const ctx = document.getElementById('conversionChart').getContext('2d');
+
+        const chart = new Chart(ctx, {
+
+            type: 'line',
+
+            data: {
+
+                labels: [
+                    'May 1',
+                    'May 6',
+                    'May 11',
+                    'May 16',
+                    'May 21',
+                    'May 26',
+                    'Now'
+                ],
+
+                datasets: [
+
+                    {
+                        label: 'Version A',
+
+                        data: [
+                            3,
+                            4,
+                            3.5,
+                            4.2,
+                            4,
+                            4.1,
+                            4
+                        ],
+
+                        borderColor: '#111827',
+                        backgroundColor: 'rgba(17, 24, 39, 0.08)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    },
+
+                    {
+                        label: 'Version B',
+
+                        data: [
+                            4,
+                            5,
+                            4.8,
+                            6,
+                            5.2,
+                            5.8,
+                            5.2
+                        ],
+
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(22, 163, 74, 0.08)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        position: 'top',
+
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 8
+                        }
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+                        grid: {
+                            color: '#e5e7eb'
+                        }
+                    },
+
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+
+                }
+
+            }
+
+        });
+
+        // =========================
+        // FETCH LIVE METRICS
+        // =========================
+
+        async function fetchMetrics() {
+
+            try {
+
+                const res = await fetch('/api/live-metrics');
+
+                const data = await res.json();
+
+                document.getElementById('total_visitors').innerText =
+                    data.total_visitors.toLocaleString();
+
+                document.getElementById('total_conversions').innerText =
+                    data.total_conversions.toLocaleString();
+
+                document.getElementById('overall_rate').innerText =
+                    data.overall_rate;
+
+                document.getElementById('var_a_visitors').innerText =
+                    data.var_a_visitors.toLocaleString();
+
+                document.getElementById('var_a_conversions').innerText =
+                    data.var_a_conversions.toLocaleString();
+
+                document.getElementById('var_a_rate').innerText =
+                    data.var_a_rate;
+
+                document.getElementById('var_b_visitors').innerText =
+                    data.var_b_visitors.toLocaleString();
+
+                document.getElementById('var_b_conversions').innerText =
+                    data.var_b_conversions.toLocaleString();
+
+                document.getElementById('var_b_rate').innerText =
+                    data.var_b_rate;
+
+                document.getElementById('confidence_level').innerText =
+                    data.confidence_level;
+
+            }
+
+            catch (err) {
+
+                console.error("Waiting for backend...", err);
+
+            }
+
+        }
+
+        fetchMetrics();
+
+        setInterval(fetchMetrics, 2000);
+
+    </script>
+
+</body>
+</html>
+```
